@@ -23,20 +23,26 @@ app.get('/api/health', (req, res) => {
 app.post('/api/orders', async (req, res) => {
     try {
         const {
-            order_id,
             customer_name,
             customer_address,
             pieces,
             design_type,
             cloth_type,
             arrival_date,
-            photos = []  
+            photos = []
         } = req.body;
 
-        if (!order_id || !customer_name || !customer_address || !pieces || !design_type || !cloth_type || !arrival_date) {
+        // Basic validation
+        if (!customer_name || !customer_address || !pieces || !design_type || !cloth_type || !arrival_date) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
+        // Generate a unique order_id: ORD-{timestamp}-{random4digit}
+        const timestamp = Date.now();
+        const random = Math.floor(Math.random() * 10000);
+        const order_id = `ORD-${timestamp}-${random}`;
+
+        // Insert the order
         const { data, error } = await supabase
             .from('orders')
             .insert({
@@ -48,7 +54,7 @@ app.post('/api/orders', async (req, res) => {
                 cloth_type,
                 arrival_date,
                 photos,
-                status: 'pending',    
+                status: 'pending',
                 done: false,
                 delivered: false,
                 created_at: new Date().toISOString()
@@ -67,7 +73,6 @@ app.post('/api/orders', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 
 app.get('/api/orders', async (req, res) => {
