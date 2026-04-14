@@ -22,8 +22,8 @@ export default function AddOrder({ user }) {
     customer_name: '',
     customer_address: '',
     pieces: '',
-    design_type: 'Floral',
-    cloth_type: 'Cotton',
+    design_type: '',
+    cloth_type: '',
     arrival_date: '',
   });
   const [photoUrls, setPhotoUrls] = useState([]);
