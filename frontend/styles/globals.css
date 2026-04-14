@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  /* ColorHunt palette: https://colorhunt.co/palette/ffde424c5c2d313e171b0c0c */
+  --primary: #4c5c2d;    /* olive */
+  --secondary: #ffde42;  /* yellow */
+  --surface: #171b0c;    /* deep */
+  --surface-2: #0c0c0c;  /* near-black */
+  --border: #313e17;     /* dark olive */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+@theme {
+  --color-primary: #4c5c2d;
+  --color-secondary: #ffde42;
+  --color-surface: #171b0c;
+  --color-surface-2: #0c0c0c;
+  --color-border: #313e17;
+}
+
+@layer base {
+  body {
+    background:
+      radial-gradient(1200px 600px at 20% -10%, color-mix(in oklab, var(--color-secondary) 22%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 90% 0%, color-mix(in oklab, var(--color-primary) 28%, transparent), transparent 55%),
+      linear-gradient(var(--color-surface-2), var(--color-surface-2));
+    color: #f5f5f4;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+@utility pw-container {
+  @apply mx-auto w-full max-w-7xl px-4;
+}
+
+@utility pw-card {
+  @apply rounded-2xl border border-border bg-surface/70 shadow-sm backdrop-blur;
+}
+
+@utility pw-btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition;
+}
+
+@utility pw-btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-2 text-sm font-semibold text-surface-2 shadow-sm transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary/35;
+}
+
+@utility pw-btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm font-semibold text-white ring-1 ring-border transition hover:bg-white/10;
+}
+
+@utility pw-input {
+  @apply w-full rounded-xl border border-border bg-black/20 px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-white/50 focus:border-secondary focus:ring-2 focus:ring-secondary/20;
+}
