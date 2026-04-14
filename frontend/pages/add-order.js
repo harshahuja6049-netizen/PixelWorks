@@ -30,8 +30,8 @@ export default function AddOrder({ user }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const designOptions = ['Floral', 'Geometric', 'Abstract', 'Animal', 'Other'];
-  const clothOptions = ['Cotton', 'Polyester', 'Silk', 'Linen', 'Wool'];
+  const designOptions = ['Round', 'Round-BT', 'Long', 'Long-BT', 'Fancy', 'Daaman','Box','2-Button','Band Gala'];
+  const clothOptions = ['Cotton', 'Alphine', 'Crush', 'Gujri', 'Paper-Cotton','A-Plain','C-Plain'];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
