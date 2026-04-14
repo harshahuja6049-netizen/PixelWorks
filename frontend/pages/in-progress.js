@@ -22,6 +22,7 @@ export default function InProgress({ user }) {
   const [error, setError] = useState('');
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [doneSubmittingIds, setDoneSubmittingIds] = useState(() => new Set());
 
   const loadOrders = async () => {
     try {
@@ -42,11 +43,17 @@ export default function InProgress({ user }) {
   }, []);
 
   const handleDone = async (id) => {
+    setDoneSubmittingIds((prev) => new Set(prev).add(id));
     try {
       await markDone(id);
       await loadOrders();
     } catch (err) {
       alert('Failed to mark as done');
+      setDoneSubmittingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   };
 
@@ -114,6 +121,7 @@ export default function InProgress({ user }) {
                 onDone={handleDone}
                 onDelivered={handleDelivered}
                 onEdit={handleEdit}
+                doneSubmitting={doneSubmittingIds.has(order.id)}
               />
             ))}
           </div>

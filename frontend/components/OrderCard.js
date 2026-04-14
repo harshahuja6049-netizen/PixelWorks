@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import OrderModal from './OrderModal';
 
-export default function OrderCard({ order, pageType, onStart, onDone, onDelivered, onAddInvoice, onDelete, onEdit }) {
+export default function OrderCard({ order, pageType, onStart, onDone, onDelivered, onAddInvoice, onDelete, onEdit, doneSubmitting }) {
   const [showModal, setShowModal] = useState(false);
   const orderName = `${order.customer_name}, ${order.customer_address}`;
   const [invoiceValue, setInvoiceValue] = useState(order.invoice || '');
@@ -43,7 +43,16 @@ export default function OrderCard({ order, pageType, onStart, onDone, onDelivere
           )}
           {pageType === 'in-progress' && (
             <>
-              <button onClick={() => onDone(order.id)} className="pw-btn bg-primary text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary/25">Done</button>
+              <button
+                onClick={() => onDone(order.id)}
+                disabled={doneSubmitting}
+                className={[
+                  'pw-btn focus:outline-none focus:ring-2 focus:ring-secondary/25',
+                  doneSubmitting ? 'bg-white/10 text-white/60 ring-1 ring-border cursor-not-allowed' : 'bg-primary text-white hover:opacity-90',
+                ].join(' ')}
+              >
+                {doneSubmitting ? 'Done ✓' : 'Done'}
+              </button>
               <button onClick={() => onDelivered(order.id)} className="pw-btn bg-white/10 text-white ring-1 ring-border hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-secondary/25">Delivered</button>
               <button onClick={() => onEdit(order.id)} className="pw-btn bg-secondary text-surface-2 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary/35">Edit</button>
             </>
