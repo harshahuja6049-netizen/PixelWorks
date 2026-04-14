@@ -6,28 +6,52 @@ const UPLOAD_PRESET = 'pixelworks_orders'; // The unsigned preset you created
 export default function Camera({ onPhotoCaptured }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [stream, setStream] = useState(null);
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     async function startCamera() {
+      let mediaStream;
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        setStream(mediaStream);
+        // Prefer the back camera on phones.
+        // Some browsers reject `exact`, so we fall back to `ideal`, then finally to any camera.
+        try {
+          mediaStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: { exact: 'environment' } },
+            audio: false,
+          });
+        } catch {
+          try {
+            mediaStream = await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: { ideal: 'environment' } },
+              audio: false,
+            });
+          } catch {
+            mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+          }
+        }
+
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
         }
+        setError('');
       } catch (err) {
         setError('Could not access camera. Please allow camera permissions.');
       }
+
+      return () => {
+        if (mediaStream) {
+          mediaStream.getTracks().forEach((track) => track.stop());
+        }
+      };
     }
-    startCamera();
+    let cleanup = null;
+    startCamera().then((fn) => {
+      cleanup = fn;
+    });
 
     return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
+      if (cleanup) cleanup();
     };
   }, []);
 

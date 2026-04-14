@@ -31,7 +31,7 @@ export default function AddOrder({ user }) {
   const [error, setError] = useState('');
 
   const designOptions = ['Round', 'Round-BT', 'Long', 'Long-BT', 'Fancy', 'Daaman','Box','2-Button','Band Gala'];
-  const clothOptions = ['Cotton', 'Alphine', 'Crush', 'Gujri', 'Paper-Cotton','A-Plain','C-Plain'];
+  const clothOptions = ['Cotton', 'Alphine', 'Crush', 'Gujri', 'Paper-Cotton','A-Plain','C-Plain','Patch'];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -75,7 +75,7 @@ export default function AddOrder({ user }) {
             <input type="text" name="customer_name" value={formData.customer_name} onChange={handleChange} required className="w-full border rounded px-3 py-2" />
           </div>
           <div>
-            <label className="block font-semibold">Customer Address</label>
+            <label className="block font-semibold">Maker</label>
             <input type="text" name="customer_address" value={formData.customer_address} onChange={handleChange} required className="w-full border rounded px-3 py-2" />
           </div>
           <div>
