@@ -7,8 +7,9 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+    origin: 'https://pixelworks-nine.vercel.app ' // your exact frontend URL
+  }));app.use(express.json());
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
