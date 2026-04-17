@@ -22,6 +22,8 @@ export default function Pending({ user }) {
   const [error, setError] = useState('');
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const totalPieces = orders.reduce((sum, order) => sum + (order.pieces || 0), 0);
+
 
   const loadOrders = async () => {
     try {
@@ -78,6 +80,7 @@ export default function Pending({ user }) {
       <div className="p-4">
         <h1 className="text-2xl mb-4">Pending Orders</h1>
         <p className="mb-4">Welcome, {user.email}</p>
+        <p className="mb-4 text-lg font-semibold">Total pieces in pending orders: {totalPieces}</p>
         <div className="mb-4">
           <input
             type="text"
