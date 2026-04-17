@@ -80,7 +80,15 @@ export default function AddOrder({ user }) {
           </div>
           <div>
             <label className="block font-semibold">Number of Pieces</label>
-            <input type="number" name="pieces" value={formData.pieces} onChange={handleChange} required className="w-full border rounded px-3 py-2" />
+            <input
+  type="number"
+  name="pieces"
+  step="1"
+  value={formData.pieces}
+  onChange={handleChange}
+  required
+  className="w-full border rounded px-3 py-2"
+/>
           </div>
           <div>
             <label className="block font-semibold">Design Type</label>

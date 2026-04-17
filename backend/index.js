@@ -7,9 +7,8 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors({
-    origin: 'https://pixelworks-nine.vercel.app ' // your exact frontend URL
-  }));app.use(express.json());
+app.use(cors());
+app.use(express.json());
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -23,7 +22,7 @@ app.get('/api/health', (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
     try {
-        const {
+        let {
             customer_name,
             customer_address,
             pieces,
@@ -33,8 +32,14 @@ app.post('/api/orders', async (req, res) => {
             photos = []
         } = req.body;
 
+        // Convert pieces to integer (in case frontend sends a string or decimal)
+        const piecesInt = parseInt(pieces, 10);
+        if (isNaN(piecesInt)) {
+            return res.status(400).json({ error: 'Pieces must be a valid number' });
+        }
+
         // Basic validation
-        if (!customer_name || !customer_address || !pieces || !design_type || !cloth_type || !arrival_date) {
+        if (!customer_name || !customer_address || !piecesInt || !design_type || !cloth_type || !arrival_date) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
@@ -50,7 +55,7 @@ app.post('/api/orders', async (req, res) => {
                 order_id,
                 customer_name,
                 customer_address,
-                pieces,
+                pieces: piecesInt,
                 design_type,
                 cloth_type,
                 arrival_date,
