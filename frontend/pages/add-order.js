@@ -16,6 +16,8 @@ export async function getServerSideProps(context) {
   return { props: { user: session.user } };
 }
 
+const designOptions = ['Round', 'Round-BT', 'Long', 'Long-BT', 'Fancy', 'Daaman','Box','2-Button','Band Gala'];
+  const clothOptions = ['Cotton', 'Alphine', 'Crush', 'Gujri', 'Paper-Cotton','A-Plain','C-Plain','Patch'];
 export default function AddOrder({ user }) {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -30,8 +32,7 @@ export default function AddOrder({ user }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const designOptions = ['Round', 'Round-BT', 'Long', 'Long-BT', 'Fancy', 'Daaman','Box','2-Button','Band Gala'];
-  const clothOptions = ['Cotton', 'Alphine', 'Crush', 'Gujri', 'Paper-Cotton','A-Plain','C-Plain','Patch'];
+  
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
