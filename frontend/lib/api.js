@@ -14,15 +14,23 @@ export async function fetchOrderById(id) {
 }
 
 export async function createOrder(orderData) {
+  console.log('📤 Sending order data:', orderData);
+  console.log('📡 API URL:', API_URL);
   const res = await fetch(`${API_URL}/api/orders`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(orderData),
   });
-  if (!res.ok) throw new Error('Failed to create order');
-  return res.json();
+  console.log('📥 Response status:', res.status);
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('❌ Response error:', errorText);
+    throw new Error('Failed to create order');
+  }
+  const data = await res.json();
+  console.log('✅ Order created:', data);
+  return data;
 }
-
 export async function startOrder(id) {
   const res = await fetch(`${API_URL}/api/orders/${id}/start`, { method: 'PATCH' });
   if (!res.ok) throw new Error('Failed to start order');
